@@ -10,10 +10,10 @@ This is a tool which finds the examples of linux commands(ex: grep, nmap, ls etc
 ## How to use:
 #### For searching a command.(ex: tar)
    
-   ./searchx tar
+   ./searchx.py tar
 #### For searching and save it offline:
    
-   ./searchx tar -- save
+   ./searchx.py tar -- save
    
 ## Commands available:
 
