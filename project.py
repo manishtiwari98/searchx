@@ -1,17 +1,24 @@
 #!/usr/bin/python3
 import requests
 from bs4 import BeautifulSoup as bs
-from sys import argv
-import re
+import sys
+import re,os
 
 #applying commands in terminal
 GREEN = '\033[92m'
 BOLD = '\033[1m'
 
-command =argv[1]
+command =sys.argv[1]
 
+if os.path.exists('./'+command):
+    os.system('less -R '+command)
+    exit()
+
+tmp=open(command,'w')
+sys.stdout=tmp
 def tgs(soup):
     for heading in soup.find_all(re.compile('^h[2-5]$')):
+        print(heading.name)
         if heading.get_text().startswith('1.'):
             tag=h_tag=heading
             break
@@ -46,7 +53,7 @@ count=0
 while(count<4):
     g_tag=g_soup.find_all('h3')[count]
     text=g_tag.get_text()
-
+    print(g_tag)
     link=g_tag.a['href'][7:g_tag.a['href'].index('&')]
     if all(val in text.lower() for val in ['example', command]):
         if re.findall(r'(thegeekstuff|tecmint)',link.lower()):
@@ -60,5 +67,12 @@ while(count<4):
         count+=1
     else:
         count+=1
+tmp.close()
+sys.stdout.close()
 if count==4:
-    print(BOLD+'This command is not available')
+    os.system('man '+command)
+    os.system('rm '+command)
+    exit()
+os.system('less -R '+command)
+if not 'save' in sys.argv:
+    os.system('rm '+command)
