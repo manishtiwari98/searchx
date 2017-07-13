@@ -16,9 +16,11 @@ if os.path.exists('./'+command):
 
 tmp=open(command,'w')
 sys.stdout=tmp
+
+data=0
 def tgs(soup):
+    global data
     for heading in soup.find_all(re.compile('^h[2-5]$')):
-        print(heading.name)
         if heading.get_text().startswith('1.'):
             tag=h_tag=heading
             break
@@ -33,18 +35,20 @@ def tgs(soup):
                 tag.strong.a.decompose()
             print( '\n'.join(GREEN + line for line in tag.get_text().split('\n')))
             print('-'*20+'\n')
+            data=1
         if tag.name==h_tag.name   :
             print(BOLD+tag.get_text())
         tag=tag.next_sibling
 
 def lifewire(link):
+    global data
     r=requests.get(link)
     soup=bs(r.content,'html.parser')   
     print(" "*20+BOLD+"Frequently used "+command+" commands"+"\n"*2)
     for block in soup.find_all('blockquote'):
         print(BOLD+block.find_previous_sibling('h3').string)
         print(GREEN+block.get_text())
-
+        data=1
 #extracting first 3 link from goole results
 g_url='https://www.google.com/search?q={}+command+examples&gbv=1&sei=YwHNVpHLOYiWmQHk3K24Cw'.format(command)
 g_page=requests.get(g_url)
@@ -53,7 +57,6 @@ count=0
 while(count<4):
     g_tag=g_soup.find_all('h3')[count]
     text=g_tag.get_text()
-    print(g_tag)
     link=g_tag.a['href'][7:g_tag.a['href'].index('&')]
     if all(val in text.lower() for val in ['example', command]):
         if re.findall(r'(thegeekstuff|tecmint)',link.lower()):
@@ -69,7 +72,7 @@ while(count<4):
         count+=1
 tmp.close()
 sys.stdout.close()
-if count==4:
+if count==4 or not data:
     os.system('man '+command)
     os.system('rm '+command)
     exit()
