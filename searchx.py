@@ -54,10 +54,12 @@ g_url='https://www.google.com/search?q={}+command+examples&gbv=1&sei=YwHNVpHLOYi
 g_page=requests.get(g_url)
 g_soup=bs(g_page.content,'html.parser')
 count=0
+links=[]
 while(count<4):
     g_tag=g_soup.find_all('h3')[count]
     text=g_tag.get_text()
     link=g_tag.a['href'][7:g_tag.a['href'].index('&')]
+    links.append(link)
     if all(val in text.lower() for val in ['example', command]):
         if re.findall(r'(thegeekstuff|tecmint)',link.lower()):
             r=requests.get(link)
@@ -71,11 +73,24 @@ while(count<4):
     else:
         count+=1
 tmp.close()
-sys.stdout.close()
+sys.stdout=sys.__stdout__
 if count==4 or not data:
-    os.system('man '+command)
     os.system('rm '+command)
+    print("Command You entered is not available right now.")
+    print("Following are few links related to your command. Pls select the number.")
+    index=1
+    for link in links:
+        print(str(index)+". "+link)
+        index+=1
+    print("5. man page")
+    x=int(input("Select the link number or man page:"))
+    if(x==5):
+        os.system('man '+command)
+    elif(x in range(1,5)):
+        os.system("firefox "+links[x-1])
+    else:print("Wrong Input")
     exit()
+
 os.system('less -R '+command)
 if not 'save' in sys.argv:
     os.system('rm '+command)
