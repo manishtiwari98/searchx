@@ -10,11 +10,11 @@ BOLD = '\033[1m'
 
 command =sys.argv[1]
 
-if os.path.exists('./'+command):
-    os.system('less -R '+command)
+if os.path.exists('./.'+command):
+    os.system('less -R .'+command)
     exit()
 
-tmp=open(command,'w')
+tmp=open("."+command,'w')
 sys.stdout=tmp
 
 data=0
@@ -75,7 +75,7 @@ while(count<4):
 tmp.close()
 sys.stdout=sys.__stdout__
 if count==4 or not data:
-    os.system('rm '+command)
+    os.system('rm .'+command)
     print("Command You entered is not available right now.")
     print("Following are few links related to your command. Pls select the number.")
     index=1
@@ -91,6 +91,6 @@ if count==4 or not data:
     else:print("Wrong Input")
     exit()
 
-os.system('less -R '+command)
+os.system('less -R .'+command)
 if not 'save' in sys.argv:
-    os.system('rm '+command)
+    os.system('rm .'+command)
