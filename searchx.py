@@ -94,3 +94,8 @@ if count==4 or not data:
 os.system('less -R .'+command)
 if not 'save' in sys.argv:
     os.system('rm .'+command)
+    
+    
+    
+    
+    # "Ex" to bewafa nikli, usse kyu search karna ?
