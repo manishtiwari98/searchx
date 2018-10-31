@@ -1,8 +1,8 @@
 ## What is searchx:
 
-This is a tool which finds the examples of linux commands(ex: grep, nmap, ls etc) from the web and displays it in terminal.
+This is a tool which finds the examples of linux commands(ex: grep, nmap, ls etc) from the web and displays it in a terminal.
 
-## Pre-requirements:
+## Pre-requirements: a
 
 * python3 should be installed in system
 * Internet connection (if that command is not saved by user)
